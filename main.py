@@ -13,9 +13,15 @@ ROLE_NAME = "GTA HUB"
 tz = pytz.timezone("Europe/Berlin")  # UTC+2 (CEST)
 
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
-
+now = datetime.now(tz)
+fake_time = (now + timedelta(minutes=10)).strftime("%H:%M")
+today_day = now.strftime("%A")
 # Schedule format: {"Activity Name": {"days": [list_of_days], "times": ["HH:MM"]}}
 schedule = {
+    "Test Drill": {
+        "days": [today_day],
+        "times": [fake_time]
+    },
     "Trafficking mission": {
         "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
         "times": ["14:00", "18:00", "22:00"]
