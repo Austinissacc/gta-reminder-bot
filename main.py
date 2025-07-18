@@ -64,11 +64,13 @@ async def reminder_loop():
         if reminder_time.strftime("%A") in info["days"]:
             for time_str in info["times"]:
                 activity_dt = tz.localize(datetime.strptime(reminder_time.strftime("%Y-%m-%d") + " " + time_str, "%Y-%m-%d %H:%M"))
-                if activity_dt.strftime("%Y-%m-%d %H:%M") == reminder_time.strftime("%Y-%m-%d %H:%M"):
+                
+                time_match = datetime.strptime(time_str, "%H:%M").time()
+                if reminder_time.time().hour == time_match.hour and reminder_time.time().minute == time_match.minute:
                     # Mention role by name (needs role to exist in server)
                     guild = bot.get_guild(GUILD_ID)
-                    role = discord.utils.get(guild.roles, name=ROLE_NAME)
-                    mention = role.mention if role else f"@{ROLE_NAME}"
+                    role = discord.utils.get(guild.roles, name=GTA_HUB)
+                    mention = role.mention if role else f"@{GTA_HUB}"
                     await channel.send(f"{mention} Reminder: **{activity}** starts in 10 minutes at {time_str} CEST!")
 
 bot.run(TOKEN)
