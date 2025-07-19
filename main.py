@@ -45,6 +45,10 @@ schedule = {
     "Aquatic Search": {
         "days": ["Monday", "Saturday", "Sunday"],
         "times": ["19:00"]
+    },
+    "Warehouse Theft": {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "times": ["00:00", "06:00", "12:00", "18:00"]
     }
 }
 
