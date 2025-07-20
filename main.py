@@ -10,7 +10,7 @@ CHANNEL_ID = 1395839181867188365
 ROLE_NAME = "GTA HUB"
 
 
-utc = pytz.utc  # Set to GMT+0 / UTC
+utc = pytz.utc  
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -66,8 +66,8 @@ async def reminder_loop():
         return
 
     guild = bot.get_guild(GUILD_ID)
-    role = discord.utils.get(guild.roles, name=ROLE_NAME)
-    mention = role.mention if role else f"@{ROLE_NAME}"
+    role = discord.utils.get(guild.roles, name=GTA_HUB)
+    mention = role.mention if role else f"@{GTA_HUB}"
 
     for activity, info in schedule.items():
         if now.strftime("%A") in info["days"]:
