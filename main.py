@@ -9,8 +9,8 @@ GUILD_ID = 946757939316817951
 CHANNEL_ID = 1395839181867188365
 ROLE_NAME = "GTA HUB"
 
-
-utc = pytz.utc  
+# Timezone
+utc = pytz.utc  # Set to GMT+0 / UTC
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -66,8 +66,8 @@ async def reminder_loop():
         return
 
     guild = bot.get_guild(GUILD_ID)
-    role = discord.utils.get(guild.roles, name=GTA_HUB)
-    mention = role.mention if role else f"@{GTA_HUB}"
+    role = discord.utils.get(guild.roles, name=ROLE_NAME)
+    mention = role.mention if role else f"@{ROLE_NAME}"
 
     for activity, info in schedule.items():
         if now.strftime("%A") in info["days"]:
@@ -76,17 +76,21 @@ async def reminder_loop():
                     scheduled_time = datetime.strptime(time_str, "%H:%M").time()
                     activity_datetime = datetime.combine(now.date(), scheduled_time).replace(tzinfo=utc)
 
-                    if abs((activity_datetime - now).total_seconds()) < 60 and (activity, 'exact') not in sent_reminders:
+                    key_before = (activity, time_str, 'before')
+                    key_exact = (activity, time_str, 'exact')
+
+                    # Reminder 10 mins before
+                    if abs((activity_datetime - now).total_seconds()) < 60 and key_exact not in sent_reminders:
                         msg = f"{mention} Reminder: **{activity}** is starting **now** at {time_str} GMT!"
                         await channel.send(msg)
                         print(f"[REMINDER SENT - EXACT] {msg}")
-                        sent_reminders.add((activity, 'exact'))
+                        sent_reminders.add(key_exact)
 
-                    elif abs(((activity_datetime - timedelta(minutes=10)) - now).total_seconds()) < 60 and (activity, 'before') not in sent_reminders:
+                    elif abs(((activity_datetime - timedelta(minutes=10)) - now).total_seconds()) < 60 and key_before not in sent_reminders:
                         msg = f"{mention} Reminder: **{activity}** starts in 10 minutes at {time_str} GMT!"
                         await channel.send(msg)
                         print(f"[REMINDER SENT - BEFORE] {msg}")
-                        sent_reminders.add((activity, 'before'))
+                        sent_reminders.add(key_before)
                 except Exception as e:
                     print(f"[ERROR] Failed to process {activity} at {time_str}: {e}")
 
