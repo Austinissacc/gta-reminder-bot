@@ -9,7 +9,7 @@ GUILD_ID = 946757939316817951
 CHANNEL_ID = 1395839181867188365
 ROLE_NAME = "GTA HUB"
 
-# Timezone
+
 utc = pytz.utc  # Set to GMT+0 / UTC
 
 intents = discord.Intents.default()
@@ -76,7 +76,6 @@ async def reminder_loop():
                     scheduled_time = datetime.strptime(time_str, "%H:%M").time()
                     activity_datetime = datetime.combine(now.date(), scheduled_time).replace(tzinfo=utc)
 
-                    # Reminder 10 mins before
                     if abs((activity_datetime - now).total_seconds()) < 60 and (activity, 'exact') not in sent_reminders:
                         msg = f"{mention} Reminder: **{activity}** is starting **now** at {time_str} GMT!"
                         await channel.send(msg)
